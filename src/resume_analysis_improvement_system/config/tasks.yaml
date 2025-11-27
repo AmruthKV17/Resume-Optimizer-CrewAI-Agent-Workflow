@@ -1,0 +1,180 @@
+---
+analyze_resume_for_feedback:
+  description: "Thoroughly analyze the provided resume text: {resume_text} to provide
+    comprehensive feedback. Focus on:\n\n1. **Content Analysis**: Review skills, experience,
+    education, and achievements presented\n2. **Structure & Presentation**: Evaluate
+    organization, consistency, and professional appearance  \n3. **Grammar & Language**:
+    Check for errors, clarity, and professional tone\n4. **Skills Representation**:
+    Assess how technical and soft skills are presented\n5. **Missing Information**:
+    Identify gaps that could strengthen the resume without suggesting fabricated content\n6.
+    **Strengths & Opportunities**: Highlight existing strong points and areas for
+    better presentation\n\nProvide specific, actionable feedback that can help improve
+    the resume's effectiveness for the {target_role} position. Do not suggest adding
+    information not already present in the candidate's background."
+  expected_output: |-
+    A detailed feedback report containing:
+    - Overall assessment score (1-10) with rationale
+    - Specific strengths identified in the resume
+    - Areas for improvement with actionable suggestions
+    - Formatting and presentation recommendations
+    - Grammar and language corrections needed
+    - Skills presentation analysis
+    - Strategic recommendations for better showcasing existing experience
+    All feedback must be based solely on content present in the original resume.
+  agent: resume_feedback_expert
+analyze_job_posting_requirements:
+  description: |-
+    Scrape and thoroughly analyze the job posting from {job_posting_url} to extract comprehensive requirements. Focus on:
+
+    1. **Required Skills & Qualifications**: Technical skills, certifications, experience levels, education requirements
+    2. **Preferred Skills**: Nice-to-have qualifications and bonus skills mentioned
+    3. **Job Responsibilities**: Key duties and day-to-day activities described
+    4. **Company Culture & Values**: Insights into company expectations and work environment
+    5. **Keywords & Terminology**: Industry-specific terms and phrases used throughout the posting
+    6. **Application Requirements**: Specific instructions or expectations for applicants
+
+    Extract only information explicitly stated in the job posting. Do not make assumptions about unstated requirements or read between the lines.
+  expected_output: "A comprehensive job analysis report including:\n- Company overview
+    and role summary\n- Complete list of required skills and qualifications (must-haves)\n-
+    List of preferred skills and qualifications (nice-to-haves)  \n- Key responsibilities
+    and expectations\n- Important keywords and industry terminology\n- Educational
+    and experience requirements\n- Application instructions or special requirements\n-
+    Overall job posting tone and company culture insights\nAll information must be
+    directly extracted from the job posting without inference or assumption."
+  agent: job_posting_analyst
+provide_resume_improvement_analysis:
+  description: |-
+    Using the feedback from the Resume Feedback Expert and the job requirements analysis from the Job Posting Analyst, provide a comprehensive analysis and improvement recommendations for the candidate's resume. The analysis must:
+
+    1. **Calculate Overall Score**: Assess the current resume's alignment with job requirements (1-10 scale)
+    2. **Identify Strengths**: Highlight existing strong points and relevant experiences
+    3. **Gap Analysis**: Identify missing elements or areas not well-aligned with job requirements
+    4. **Improvement Suggestions**: Provide specific, actionable recommendations for enhancing the resume
+    5. **Keyword Optimization**: Suggest relevant keywords that can be authentically incorporated
+    6. **Formatting Recommendations**: Advise on structure, presentation, and ATS optimization
+    7. **Priority Ranking**: Rank suggestions by impact and importance
+
+    **Strict Guidelines**:
+    - All suggestions must be based on existing experience and skills in the resume
+    - Never suggest adding fabricated experience or skills
+    - Focus on better presentation and highlighting of authentic qualifications
+    - Provide realistic, implementable recommendations
+  expected_output: |-
+    A comprehensive JSON object containing the resume analysis and improvement recommendations:
+    {
+      "analysis_summary": {
+        "overall_score": "[Score out of 10]",
+        "score_rationale": "[Detailed explanation of the score]",
+        "resume_vs_job_alignment": "[Percentage and explanation of how well resume aligns with job requirements]"
+      },
+      "strengths": [
+        {
+          "category": "[e.g., Technical Skills, Experience, Education]",
+          "strength": "[Specific strength identified]",
+          "relevance_to_role": "[How this strength applies to the target role]"
+        }
+      ],
+      "gap_analysis": [
+        {
+          "gap_type": "[e.g., Missing Skills, Weak Presentation, Formatting]",
+          "description": "[What's missing or needs improvement]",
+          "impact": "[High/Medium/Low impact on job application success]"
+        }
+      ],
+      "improvement_suggestions": [
+        {
+          "priority": "[High/Medium/Low]",
+          "category": "[Section to improve]",
+          "current_issue": "[What needs to be fixed]",
+          "suggested_improvement": "[Specific recommendation]",
+          "example": "[Example of how to implement if applicable]"
+        }
+      ],
+      "keyword_recommendations": [
+        {
+          "keyword": "[Relevant keyword from job posting]",
+          "where_to_add": "[Which section to incorporate it]",
+          "justification": "[Why this keyword is relevant to candidate's experience]"
+        }
+      ],
+      "formatting_recommendations": [
+        {
+          "section": "[Which section needs formatting improvement]",
+          "issue": "[Current formatting issue]",
+          "recommendation": "[How to improve]"
+        }
+      ],
+      "next_steps": [
+        "[Prioritized list of immediate actions to take]"
+      ]
+    }
+
+    The analysis must be thorough, actionable, and focused on authentic improvements that can realistically be implemented.
+  agent: resume_analysis_improvement_advisor
+  context:
+  - analyze_resume_for_feedback
+  - analyze_job_posting_requirements
+generate_personalized_cover_letter:
+  description: |-
+    Using the comprehensive resume analysis, job posting requirements, and improvement recommendations from previous agents, generate a professional, personalized cover letter for the candidate applying for {target_role}. The cover letter must:
+
+    1. **Professional Format**: Include proper business letter formatting with date and professional greeting
+    2. **Company Research**: Reference the specific company and position from the job posting analysis
+    3. **Authentic Alignment**: Connect the candidate's genuine experience and skills (from resume analysis) with job requirements
+    4. **Value Proposition**: Clearly articulate what the candidate brings to the role using real achievements and experiences
+    5. **Keyword Integration**: Naturally incorporate relevant keywords from the job posting analysis
+    6. **Compelling Narrative**: Tell a cohesive story that flows from introduction to conclusion
+    7. **Call to Action**: End with a professional closing that encourages next steps
+
+    **Strict Guidelines**:
+    - Only reference experience, skills, and achievements present in the original resume
+    - Never exaggerate, fabricate, or add qualifications not mentioned in the resume
+    - Use confident but honest language that reflects genuine capabilities
+    - Address specific requirements mentioned in the job posting where candidate has relevant experience
+    - Keep the letter concise (3-4 paragraphs, under 400 words)
+    - Ensure the tone matches the company culture insights from job posting analysis
+  expected_output: |-
+    A complete, ready-to-use cover letter in professional business format including:
+    - Proper header with date and greeting
+    - Opening paragraph that captures attention and states interest in {target_role}
+    - 1-2 body paragraphs highlighting relevant experience and value proposition
+    - Closing paragraph with call to action and professional sign-off
+    - Natural integration of relevant keywords from job analysis
+    - Authentic alignment between candidate's background and role requirements
+    - Professional tone appropriate for the target company and industry
+    - Letter length optimized for busy hiring managers (under 400 words)
+  agent: cover_letter_generator
+  context:
+  - analyze_resume_for_feedback
+  - analyze_job_posting_requirements
+  - provide_resume_improvement_analysis
+consolidate_final_json_output:
+  description: "Combine the comprehensive resume improvement analysis and the generated
+    cover letter into a single, well-structured JSON response. The output must integrate:\n\n1.
+    **Resume Analysis Data**: All analysis components from the Resume Analysis & Improvement
+    Advisor\n2. **Cover Letter Content**: The complete cover letter text from the
+    Cover Letter Generator  \n3. **Metadata**: Additional helpful information about
+    the analysis\n\nStructure the data in a logical, hierarchical JSON format that
+    includes:\n- Resume analysis results (scores, strengths, gaps, suggestions, etc.)\n-
+    Complete cover letter text\n- Processing metadata (dates, target role, etc.)\n\nEnsure
+    the JSON is properly formatted, validated, and ready for programmatic consumption
+    while remaining human-readable."
+  expected_output: "A comprehensive JSON object that combines all outputs:\n{\n  \"analysis_metadata\":
+    {\n    \"target_role\": \"[Target role]\",\n    \"analysis_date\": \"[Current
+    date]\", \n    \"system_version\": \"Resume Analysis & Improvement System v2.0\"\n
+    \ },\n  \"resume_analysis\": {\n    \"analysis_summary\": {\n      \"overall_score\":
+    \"[Score out of 10]\",\n      \"score_rationale\": \"[Detailed explanation]\",\n
+    \     \"resume_vs_job_alignment\": \"[Alignment analysis]\"\n    },\n    \"strengths\":
+    [...],\n    \"gap_analysis\": [...],\n    \"improvement_suggestions\": [...],\n
+    \   \"keyword_recommendations\": [...],\n    \"formatting_recommendations\": [...],\n
+    \   \"next_steps\": [...]\n  },\n  \"cover_letter\": {\n    \"content\": \"[Complete
+    cover letter text]\",\n    \"word_count\": \"[Number of words]\",\n    \"structure\":
+    {\n      \"paragraphs\": \"[Number of paragraphs]\",\n      \"key_highlights\":
+    \"[Main points covered]\"\n    }\n  },\n  \"summary\": {\n    \"processing_status\":
+    \"complete\",\n    \"total_recommendations\": \"[Count of suggestions]\",\n    \"priority_actions\":
+    \"[Top 3 most important actions]\"\n  }\n}\n\nThe JSON must be properly escaped,
+    validated, and formatted for easy parsing and integration."
+  agent: output_consolidation_specialist
+  context:
+  - provide_resume_improvement_analysis
+  - generate_personalized_cover_letter
